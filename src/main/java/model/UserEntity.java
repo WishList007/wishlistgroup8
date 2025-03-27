@@ -44,10 +44,10 @@ public class UserEntity {
     public String getEmail(){
         return email;
     }
-    private int getUserId(){
+    public int getUserId(){
         return userId;
     }
-    private List<WishListItem>getWishListItem(){
+    public List<WishListItem>getWishListItem(){
         return wishListItem;
     }
     @Override
