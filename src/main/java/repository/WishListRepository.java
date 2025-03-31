@@ -24,6 +24,11 @@ public class WishListRepository {
         RowMapper<WishListItem> rowMapper = new BeanPropertyRowMapper<>(WishListItem.class);
         return jdbcTemplate.query(sql, rowMapper, itemId);
     }
+    public List<WishListItem> findItem(int itemName) {
+        String sql = "SELECT * FROM items WHERE itemId = ?";
+        RowMapper<WishListItem> rowMapper = new BeanPropertyRowMapper<>(WishListItem.class);
+        return jdbcTemplate.query(sql, rowMapper,WishList.getWishListItems());
+    }
 
     public List<UserEntity> findAllUsers() {
         String sql = "SELECT * FROM users";

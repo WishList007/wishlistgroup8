@@ -8,40 +8,48 @@ public class WishList {
     private String wishListDescription;
     private List<WishListItem> wishListItems;
 
-    public WishList(int wishListId, String wishListName,String wishListDescription,List<WishListItem>wishListItems){
+    public WishList(int wishListId, String wishListName, String wishListDescription, List<WishListItem> wishListItems) {
         this.wishListId = wishListId;
         this.wishListName = wishListName;
         this.wishListDescription = wishListDescription;
         this.wishListItems = wishListItems;
     }
-    public WishList(){
+
+    public WishList() {
     }
+
     //----------setters----------
-    public void setWishListId(int wishListId){
+    public void setWishListId(int wishListId) {
         this.wishListId = wishListId;
     }
-    public void setWishListName(String wishListName){
+
+    public void setWishListName(String wishListName) {
         this.wishListName = wishListName;
     }
-    public void setWishListDescription(String wishListDescription){
+
+    public void setWishListDescription(String wishListDescription) {
         this.wishListDescription = wishListDescription;
     }
-    public void setWishListItems(List<WishListItem>wishListItems){
+
+    public void setWishListItems(List<WishListItem> wishListItems) {
         this.wishListItems = wishListItems;
     }
+
     //----------Getters-----------
-    public int getWishListId(){
+    public int getWishListId() {
         return wishListId;
     }
-    public String getWishListName(){
+
+    public String getWishListName() {
         return wishListName;
     }
-    public String getWishListDescription(){
+
+    public String getWishListDescription() {
         return wishListDescription;
     }
-    public List<WishListItem> getWishListItems(){
+
+    public List<WishListItem> getWishListItems() {
         return wishListItems;
 
     }
-
 }
