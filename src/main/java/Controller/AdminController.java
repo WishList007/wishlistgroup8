@@ -13,4 +13,7 @@ import org.springframework.http.ResponseEntity;
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
+
+    @Autowired
+    private AdminService adminService;
 }
