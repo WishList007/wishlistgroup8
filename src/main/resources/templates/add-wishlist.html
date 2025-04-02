@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Wishlist</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="wishlist-container">
+        <h2>Create a New Wishlist</h2>
+        <p class="welcome-message">Welcome, <span th:text="${username}"></span>!</p>
+
+        <div class="form-container">
+            <form th:action="@{/wishlist/add}" method="post" class="wishlist-form">
+                <input type="hidden" name="username" th:value="${username}"/>
+                
+                <div class="form-group">
+                    <label for="listName">Wishlist Name</label>
+                    <input type="text" id="listName" name="listName" required/>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="4"></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">Create Wishlist</button>
+            </form>
+
+            <div th:if="${error}" class="message error">
+                <p th:text="${error}"></p>
+            </div>
+
+            <div th:if="${success}" class="message success">
+                <p th:text="${success}"></p>
+            </div>
+
+            <a th:href="@{/wishlist/{username}(username=${username})}" class="back-link">View My Wishlists</a>
+        </div>
+    </div>
+</body>
+</html> 

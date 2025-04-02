@@ -1,5 +1,6 @@
 package com.example.wishlist.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WishList {
@@ -12,10 +13,11 @@ public class WishList {
         this.wishListId = wishListId;
         this.wishListName = wishListName;
         this.wishListDescription = wishListDescription;
-        this.wishListItems = wishListItems;
+        this.wishListItems = wishListItems != null ? wishListItems : new ArrayList<>();
     }
 
     public WishList() {
+        this.wishListItems = new ArrayList<>();
     }
 
     //----------setters----------
@@ -32,7 +34,7 @@ public class WishList {
     }
 
     public void setWishListItems(List<WishListItem> wishListItems) {
-        this.wishListItems = wishListItems;
+        this.wishListItems = wishListItems != null ? wishListItems : new ArrayList<>();
     }
 
     //----------Getters-----------
@@ -48,8 +50,7 @@ public class WishList {
         return wishListDescription;
     }
 
-    public  List<WishListItem> getWishListItems() {
-        return wishListItems;
-
+    public List<WishListItem> getWishListItems() {
+        return wishListItems != null ? wishListItems : new ArrayList<>();
     }
 }
