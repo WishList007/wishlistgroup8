@@ -48,7 +48,7 @@ public class WishList {
         return wishListDescription;
     }
 
-    public List<WishListItem> getWishListItems() {
+    public  List<WishListItem> getWishListItems() {
         return wishListItems;
 
     }
