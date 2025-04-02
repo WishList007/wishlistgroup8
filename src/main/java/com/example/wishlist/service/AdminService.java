@@ -1,8 +1,8 @@
-package service;
-import exception.ErrorMessage;
-import model.Admin;
-import model.UserEntity;
-import model.WishListItem;
+package com.example.wishlist.service;
+import com.example.wishlist.exception.ErrorMessage;
+import com.example.wishlist.model.Admin;
+import com.example.wishlist.model.UserEntity;
+import com.example.wishlist.model.WishListItem;
 
 import java.util.List;
 import java.util.Optional;

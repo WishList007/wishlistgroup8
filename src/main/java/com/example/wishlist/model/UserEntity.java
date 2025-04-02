@@ -1,4 +1,4 @@
-package model;
+package com.example.wishlist.model;
 import java.util.List;
 
 public class UserEntity {

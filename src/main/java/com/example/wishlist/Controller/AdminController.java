@@ -1,15 +1,15 @@
-package Controller;
-import exception.ErrorMessage;
-import model.Admin;
-import model.UserEntity;
-import model.WishListItem;
+package com.example.wishlist.Controller;
+import com.example.wishlist.exception.ErrorMessage;
+import com.example.wishlist.model.Admin;
+import com.example.wishlist.model.UserEntity;
+import com.example.wishlist.model.WishListItem;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import service.AdminService;
+import com.example.wishlist.service.AdminService;
 
 import java.util.List;
 

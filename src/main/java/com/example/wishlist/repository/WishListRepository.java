@@ -1,8 +1,8 @@
-package repository;
+package com.example.wishlist.repository;
 
-import model.UserEntity;
-import model.WishList;
-import model.WishListItem;
+import com.example.wishlist.model.UserEntity;
+import com.example.wishlist.model.WishList;
+import com.example.wishlist.model.WishListItem;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
