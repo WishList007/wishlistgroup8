@@ -28,7 +28,7 @@ public class WishListRepository {
     public List<WishListItem> findItem(int itemName) {
         String sql = "SELECT * FROM items WHERE itemId = ?";
         RowMapper<WishListItem> rowMapper = new BeanPropertyRowMapper<>(WishListItem.class);
-        return jdbcTemplate.query(sql, rowMapper,WishList.getWishListItems());
+        return jdbcTemplate.query(sql, rowMapper, itemName);
     }
 
     public List<UserEntity> findAllUsers() {

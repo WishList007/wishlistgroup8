@@ -1,4 +1,4 @@
 package exception;
 
-public class ErrorMessage {
+public class ErrorMessage extends Throwable {
 }
