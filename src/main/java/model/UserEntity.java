@@ -8,14 +8,14 @@ public class UserEntity {
     private int userId;
     private List<WishListItem> wishListItem;
 
+    public UserEntity(){}
+
     public UserEntity(String username, String password, String email, int userId, List<WishListItem> wishListItem){
         this.username = username;
         this.password = password;
         this.email = email;
         this.userId = userId;
         this.wishListItem = wishListItem;
-    }
-    public UserEntity(){
     }
     //------setters---(voids)-------
     public void setUsername(String username){
