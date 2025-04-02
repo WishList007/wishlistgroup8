@@ -25,7 +25,7 @@ public class AdminController {
         if(auth == null){
             return new ResponseEntity<>("Authentication failed", HttpStatus.UNAUTHORIZED);
         }
-        Admin admin = adminService.findAdminByMail(auth.name()).orElseThrow(() -> new ErrorMessage("Admin not found"));
+        Admin admin = adminService.findAdminByMail(auth.name()).orElseThrow(() -> new ErrorMessage());
         return new ResponseEntity<>(admin.getAdminEmail()+"Log in approved",HttpStatus.ACCEPTED);
     }
     //ADMIN REGISTER------------
