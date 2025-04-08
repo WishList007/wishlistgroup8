@@ -8,37 +8,59 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="wishlist-container">
-        <h2>Create a New Wishlist</h2>
-        <p class="welcome-message">Welcome, <span th:text="${username}"></span>!</p>
-
-        <div class="form-container">
-            <form th:action="@{/wishlist/add}" method="post" class="wishlist-form">
-                <input type="hidden" name="username" th:value="${username}"/>
-                
-                <div class="form-group">
-                    <label for="listName">Wishlist Name</label>
-                    <input type="text" id="listName" name="listName" required/>
+    <div class="container">
+        <header class="wishlist-header">
+            <div class="header-content">
+                <h1>Create New Wishlist</h1>
+                <div class="header-actions">
+                    <a th:href="@{/wishlist/{username}(username=${username})}" class="back-button">
+                        <span class="back-icon">←</span> See All Wishlists
+                    </a>
                 </div>
-                
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea id="description" name="description" rows="4"></textarea>
+            </div>
+        </header>
+
+        <main>
+            <div class="wishlist-details">
+                <div class="welcome-section">
+                    <p class="welcome-message">Hello, <span th:text="${username}" class="username"></span>! Let's create your new wishlist.</p>
                 </div>
-                
-                <button type="submit" class="submit-btn">Create Wishlist</button>
-            </form>
 
-            <div th:if="${error}" class="message error">
-                <p th:text="${error}"></p>
+                <div class="form-container">
+                    <form th:action="@{/wishlist/add}" method="post" class="modern-form">
+                        <input type="hidden" name="username" th:value="${username}"/>
+                        
+                        <div class="form-group">
+                            <label for="listName">Wishlist Name</label>
+                            <input type="text" id="listName" name="listName" required 
+                                   placeholder="Enter a name for your wishlist"/>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="description">Description (Optional)</label>
+                            <textarea id="description" name="description" rows="4" 
+                                    placeholder="Add a description to help others understand what this wishlist is for"></textarea>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="submit-button">
+                                <span class="plus-icon">+</span> Create Wishlist
+                            </button>
+                        </div>
+                    </form>
+
+                    <div th:if="${error}" class="alert error-alert">
+                        <span class="alert-icon">⚠️</span>
+                        <p th:text="${error}"></p>
+                    </div>
+
+                    <div th:if="${success}" class="alert success-alert">
+                        <span class="alert-icon">✅</span>
+                        <p th:text="${success}"></p>
+                    </div>
+                </div>
             </div>
-
-            <div th:if="${success}" class="message success">
-                <p th:text="${success}"></p>
-            </div>
-
-            <a th:href="@{/wishlist/{username}(username=${username})}" class="back-link">View My Wishlists</a>
-        </div>
+        </main>
     </div>
 </body>
 </html> 

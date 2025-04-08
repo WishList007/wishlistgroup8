@@ -8,44 +8,69 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="wishlist-container">
-        <h2>Add a Wish</h2>
-        <p class="welcome-message">Adding to wishlist: <span th:text="${wishListName}"></span></p>
-
-        <div class="form-container">
-            <form th:action="@{/wishlist/wish/add}" method="post" class="login-form">
-                <input type="hidden" name="wishListId" th:value="${wishListId}" />
-                <input type="hidden" name="username" th:value="${username}" />
-                
-                <div class="form-group">
-                    <label for="itemName">Item Name</label>
-                    <input type="text" id="itemName" name="itemName" required/>
+    <div class="container">
+        <header class="wishlist-header">
+            <div class="header-content">
+                <h1>Add New Wish</h1>
+                <div class="header-actions">
+                    <a th:href="@{/wishlist/view/{wishListId}(wishListId=${wishListId},username=${username})}" class="back-button">
+                        <span class="back-icon">←</span> Back to Wishlist
+                    </a>
                 </div>
-
-                <div class="form-group">
-                    <label for="itemDescription">Description</label>
-                    <textarea id="itemDescription" name="itemDescription" rows="3"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="itemPrice">Price</label>
-                    <input type="number" id="itemPrice" name="itemPrice" step="0.01" min="0"/>
-                </div>
-
-                <div class="form-group">
-                    <label for="itemLink">Link to Item</label>
-                    <input type="url" id="itemLink" name="itemLink" placeholder="https://..."/>
-                </div>
-
-                <button type="submit" class="submit-btn">Add Wish</button>
-            </form>
-
-            <div th:if="${error}" class="message error">
-                <p th:text="${error}"></p>
             </div>
+        </header>
 
-            <a th:href="@{/wishlist/{username}(username=${username})}" class="back-link">Back to Wishlists</a>
-        </div>
+        <main>
+            <div class="wishlist-details">
+                <div class="welcome-section">
+                    <p class="welcome-message">Adding to wishlist: <span th:text="${wishListName}" class="wishlist-name"></span></p>
+                </div>
+
+                <div class="form-container">
+                    <form th:action="@{/wishlist/wish/add}" method="post" class="modern-form">
+                        <input type="hidden" name="wishListId" th:value="${wishListId}" />
+                        <input type="hidden" name="username" th:value="${username}" />
+                        
+                        <div class="form-group">
+                            <label for="itemName">Item Name</label>
+                            <input type="text" id="itemName" name="itemName" required
+                                   placeholder="Enter the name of your wish"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="itemDescription">Description (Optional)</label>
+                            <textarea id="itemDescription" name="itemDescription" rows="3"
+                                    placeholder="Add details about your wish"></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label for="itemPrice">Price (DKK)</label>
+                                <input type="number" id="itemPrice" name="itemPrice" step="0.01" min="0"
+                                       placeholder="0.00"/>
+                            </div>
+
+                            <div class="form-group half">
+                                <label for="itemLink">Link to Item</label>
+                                <input type="url" id="itemLink" name="itemLink" 
+                                       placeholder="https://..."/>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="submit-button">
+                                <span class="plus-icon">+</span> Add to Wishlist
+                            </button>
+                        </div>
+                    </form>
+
+                    <div th:if="${error}" class="alert error-alert">
+                        <span class="alert-icon">⚠️</span>
+                        <p th:text="${error}"></p>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
 </body>
 </html> 

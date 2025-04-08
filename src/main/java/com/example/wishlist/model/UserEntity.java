@@ -18,7 +18,7 @@ public class UserEntity {
     }
 
     public UserEntity() {
-        // Default constructor for Spring form binding
+   
     }
     //------setters---(voids)-------
     public void setUsername(String username){
