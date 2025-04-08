@@ -53,16 +53,17 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_974323CBCF824541A7F31BD39349F846 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_CC6AB61B58574C36B1C85FA7FC742DEF }}
 
-     - name: Set environment variables in Azure App Service
-  uses: azure/appservice-settings@v1
-  with:
-    app-name: 'wishlistgroup8'
-    app-settings-json: >
-      {
-        "DEV_DATABASE_URL": "${{ secrets.DEV_DATABASE_URL }}",
-        "DEV_USERNAME": "${{ secrets.DEV_USERNAME }}",
-        "DEV_PASSWORD": "${{ secrets.DEV_PASSWORD }}"
-      }
+      - name: Set environment variables in Azure App Service
+        uses: azure/appservice-settings@v1
+        with:
+          app-name: 'wishlistgroup8'
+          app-settings-json: >
+            {
+              "DEV_DATABASE_URL": "${{ secrets.DEV_DATABASE_URL }}",
+              "DEV_USERNAME": "${{ secrets.DEV_USERNAME }}",
+              "DEV_PASSWORD": "${{ secrets.DEV_PASSWORD }}"
+            }
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
