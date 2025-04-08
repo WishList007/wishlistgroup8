@@ -8,13 +8,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Include the navbar fragment -->
+    <div th:replace="fragments/navbar :: navbar"></div>
+    
     <div class="container">
         
         <header class="wishlist-header">
             <div class="header-content">
                 <h1><span th:text="${username}"></span>'s Wishlists</h1>
                 <div class="header-actions">
-                    <a th:href="@{/wishlist/add/{username}(username=${username})}" class="add-wish-button">
+                    <a th:unless="${wishLists.empty}" th:href="@{/wishlist/add/{username}(username=${username})}" class="add-wish-button">
                         <span class="plus-icon">+</span> Create New Wishlist
                     </a>
                 </div>

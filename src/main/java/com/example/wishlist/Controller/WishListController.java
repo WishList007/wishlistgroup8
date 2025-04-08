@@ -113,6 +113,15 @@ public class WishListController {
             wishList.setWishListName(listName);
             wishList.setWishListDescription(description);
             wishListService.addWishList(wishList, username);
+            
+            // Get the newly created wishlist ID
+            List<WishList> userWishlists = wishListService.getAllWishLists(username);
+            if (!userWishlists.isEmpty()) {
+                // Assuming the newest wishlist is the last one in the list
+                WishList newestWishlist = userWishlists.get(userWishlists.size() - 1);
+                return "redirect:/wishlist/view/" + newestWishlist.getWishListId() + "?username=" + username;
+            }
+            
             return "redirect:/wishlist/" + username;
         } catch (Exception e) {
             model.addAttribute("error", "Failed to create wishlist: " + e.getMessage());
@@ -177,7 +186,7 @@ public class WishListController {
                 item.setItemLink(itemLink);
             }
             wishListService.addItemToWishList(item, wishListId);
-            return "redirect:/wishlist/" + username;
+            return "redirect:/wishlist/view/" + wishListId + "?username=" + username;
         } catch (Exception e) {
             model.addAttribute("error", "Failed to add wish: " + e.getMessage());
             model.addAttribute("wishListId", wishListId);

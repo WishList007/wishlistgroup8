@@ -477,3 +477,77 @@
     }
   }
   
+  /* Navbar styles */
+  .navbar {
+    background-color: var(--card-bg);
+    max-width: 1200px;
+    box-shadow: 0 2px 4px var(--shadow);
+    padding: 20px 20px 20px 20px;
+    border-radius: 10px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+  }
+  
+  .navbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo a {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    text-decoration: none;
+  }
+  
+  .logo-image {
+    height: 65px;
+    width: auto;
+  }
+  
+  .logo a:hover {
+    color: var(--primary);
+  }
+  
+  .nav-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .nav-button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+  
+  .login-button {
+    background-color: var(--primary);
+    color: white;
+  }
+  
+  .login-button:hover {
+    background-color: var(--primary-light);
+    color: white;
+  }
+  
+  .logout-button {
+    background-color: var(--bg);
+    color: var(--text-dark);
+  }
+  
+  .logout-button:hover {
+    background-color: var(--border);
+  }
+  
+  /* Form link styles */
+  .form-link {
+    display: block;
+    margin-top: 15px;
+    text-align: center;
+  }
+  

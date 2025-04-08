@@ -8,9 +8,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Include the navbar fragment -->
+    <div th:replace="fragments/navbar :: navbar"></div>
     
     <div class="wishlist-container">
-        <h2>Welcome Back</h2>
+        
         
         <div class="form-container">
             <form th:action="@{/login}" method="post" th:object="${user}" class="login-form">
@@ -31,7 +33,7 @@
                 <p th:text="${error}"></p>
             </div>
             
-            <a th:href="@{/signup}" class="">Create an Account</a>
+            <a th:href="@{/signup}" class="form-link">Create an Account</a>
         </div>
     </div>
 </body>

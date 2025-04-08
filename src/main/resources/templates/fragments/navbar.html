@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div th:fragment="navbar">
+        <nav class="navbar">
+            <div class="navbar-container">
+                <div class="logo">
+                    <a th:href="@{/}">
+                        <img th:src="@{/images/wishlist-logo.png}" alt="WishList App" class="logo-image">
+                    </a>
+                </div>
+                <div class="nav-buttons">
+                    <a th:if="${session.username == null}" th:href="@{/login}" class="nav-button login-button">Login</a>
+                    <a th:if="${session.username != null}" th:href="@{/logout}" class="nav-button logout-button">Logout</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+</body>
+</html> 
