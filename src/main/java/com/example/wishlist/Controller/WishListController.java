@@ -30,26 +30,25 @@ public class WishListController {
         return "redirect:/login";
     }
 
+    @GetMapping("/login")
+    public String showLoginForm(Model model) {
+        model.addAttribute("user", new UserEntity());
+        return "login";
+    }
+
     @PostMapping("/login")
     public String loginUser(@ModelAttribute("user") UserEntity user, Model model) {
         try {
             UserEntity existingUser = wishListService.getUserByUsername(user.getUsername());
             if (existingUser.getPassword().equals(user.getPassword())) {
                 return "redirect:/wishlist/add/" + existingUser.getUsername();
-            } else {
-                model.addAttribute("error", "Incorrect password");
-                return "login";
             }
+            model.addAttribute("error", "Incorrect password");
+            return "login";
         } catch (Exception e) {
             model.addAttribute("error", "User not found");
             return "login";
         }
-    }
-
-    @GetMapping("/login")
-    public String showLoginForm(Model model) {
-        model.addAttribute("user", new UserEntity());
-        return "login";
     }
 
     @GetMapping("/signup")
@@ -66,9 +65,7 @@ public class WishListController {
             return "signup";
         } catch (Exception e) {
             try {
-                int newUserId = wishListService.getMaxUserId() + 1;
-                user.setUserId(newUserId);
-                
+                user.setUserId(wishListService.getMaxUserId() + 1);
                 wishListService.addUser(user);
                 return "redirect:/login";
             } catch (Exception ex) {
@@ -81,6 +78,12 @@ public class WishListController {
     @GetMapping("/wishlist/add/{username}")
     public String showAddWishlistForm(@PathVariable String username, Model model) {
         model.addAttribute("username", username);
+        try {
+            List<WishList> wishLists = wishListService.getAllWishLists(username);
+            model.addAttribute("wishLists", wishLists);
+        } catch (Exception e) {
+            model.addAttribute("wishLists", new ArrayList<>());
+        }
         return "add-wishlist";
     }
 
@@ -93,9 +96,7 @@ public class WishListController {
             WishList wishList = new WishList();
             wishList.setWishListName(listName);
             wishList.setWishListDescription(description);
-            
             wishListService.addWishList(wishList, username);
-            
             return "redirect:/wishlist/" + username;
         } catch (Exception e) {
             model.addAttribute("error", "Failed to create wishlist: " + e.getMessage());
@@ -105,22 +106,14 @@ public class WishListController {
     }
 
     @PostMapping("/wishlist/delete")
-    public String deleteWishlist(@RequestParam int wishListId, @RequestParam String username, Model model) {
-        try {
-            boolean deleted = wishListService.deleteWishList(wishListId);
-            if (!deleted) {
-                throw new Exception("Wishlist not found");
-            }
-            return "redirect:/wishlist/" + username;
-        } catch (Exception e) {
-            return "redirect:/wishlist/" + username;
-        }
+    public String deleteWishlist(@RequestParam int wishListId, @RequestParam String username) {
+        wishListService.deleteWishList(wishListId);
+        return "redirect:/wishlist/" + username;
     }
 
     @GetMapping("/wishlist/wish/add/{wishListId}")
     public String showAddWishForm(@PathVariable int wishListId, @RequestParam String username, Model model) {
         try {
-            // Get wishlist name for display
             List<WishList> wishlists = wishListService.getAllWishLists(username);
             String wishListName = wishlists.stream()
                 .filter(w -> w.getWishListId() == wishListId)
@@ -155,7 +148,6 @@ public class WishListController {
             if (itemLink != null && !itemLink.trim().isEmpty()) {
                 item.setItemLink(itemLink);
             }
-            
             wishListService.addItemToWishList(item, wishListId);
             return "redirect:/wishlist/" + username;
         } catch (Exception e) {
@@ -170,14 +162,7 @@ public class WishListController {
     public String viewUserWishlists(@PathVariable String username, Model model) {
         try {
             wishListService.getUserByUsername(username);
-            
-            List<WishList> wishLists;
-            try {
-                wishLists = wishListService.getAllWishLists(username);
-            } catch (Exception e) {
-                wishLists = new ArrayList<>();
-            }
-            
+            List<WishList> wishLists = wishListService.getAllWishLists(username);
             model.addAttribute("wishLists", wishLists);
             model.addAttribute("username", username);
             return "view-wishlists";
@@ -188,26 +173,17 @@ public class WishListController {
 
     @GetMapping("/wishlist/view/{wishListId}")
     public String viewWishlist(@PathVariable int wishListId, @RequestParam String username, Model model) {
-        System.out.println("Viewing wishlist with ID: " + wishListId + " for user: " + username);
         try {
-            // Get the specific wishlist
             List<WishList> wishlists = wishListService.getAllWishLists(username);
-            System.out.println("Found " + wishlists.size() + " wishlists for user");
-            
             WishList wishlist = wishlists.stream()
                 .filter(w -> w.getWishListId() == wishListId)
                 .findFirst()
                 .orElseThrow(() -> new Exception("Wishlist not found"));
             
-            System.out.println("Found wishlist: " + wishlist.getWishListName());
-            System.out.println("Items in wishlist: " + (wishlist.getWishListItems() != null ? wishlist.getWishListItems().size() : "null"));
-            
             model.addAttribute("wishlist", wishlist);
             model.addAttribute("username", username);
             return "view-wishlist";
         } catch (Exception e) {
-            System.err.println("Error viewing wishlist: " + e.getMessage());
-            e.printStackTrace();
             return "redirect:/wishlist/" + username;
         }
     }
@@ -216,27 +192,26 @@ public class WishListController {
     public String showEditWishForm(@PathVariable int itemId, 
                                  @RequestParam(required = false) String username, 
                                  Model model) {
-        System.out.println("Editing item with ID: " + itemId);
         WishListItem item = wishListService.getWishListItemById(itemId);
         if (item == null) {
-            System.err.println("Item not found with ID: " + itemId);
             return "redirect:/error";
         }
-        System.out.println("Found item: " + item.getItemName());
         model.addAttribute("item", item);
         model.addAttribute("username", username);
         return "edit-wish";
     }
 
     @PostMapping("/wishlist/wish/edit")
-    public String editWish(@ModelAttribute WishListItem item, @RequestParam("wishListId") int wishListId,
+    public String editWish(@ModelAttribute WishListItem item, 
+                          @RequestParam("wishListId") int wishListId,
                           @RequestParam("username") String username) {
         wishListService.updateWishListItem(item);
         return "redirect:/wishlist/view/" + wishListId + "?username=" + username;
     }
 
     @PostMapping("/wishlist/wish/delete/{itemId}")
-    public String deleteWish(@PathVariable int itemId, @RequestParam("wishListId") int wishListId,
+    public String deleteWish(@PathVariable int itemId, 
+                           @RequestParam("wishListId") int wishListId,
                            @RequestParam("username") String username) {
         wishListService.deleteWishListItem(itemId);
         return "redirect:/wishlist/view/" + wishListId + "?username=" + username;

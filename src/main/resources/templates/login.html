@@ -23,14 +23,14 @@
                     <input type="password" id="password" th:field="*{password}" required/>
                 </div>
 
-                <button type="submit" class="submit-btn">Login</button>
+                <button type="submit" class="submit-button">Login</button>
             </form>
 
             <div th:if="${error}" class="message error">
                 <p th:text="${error}"></p>
             </div>
             
-            <a th:href="@{/signup}" class="back-link">Create an Account</a>
+            <a th:href="@{/signup}" class="">Create an Account</a>
         </div>
     </div>
 </body>

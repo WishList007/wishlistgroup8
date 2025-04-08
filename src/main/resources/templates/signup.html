@@ -28,14 +28,14 @@
                     <input type="email" id="email" th:field="*{email}" required/>
                 </div>
 
-                <button type="submit" class="submit-btn">Sign Up</button>
+                <button type="submit" class="submit-button">Sign Up</button>
             </form>
 
             <div th:if="${error}" class="message error">
                 <p th:text="${error}"></p>
             </div>
             
-            <a th:href="@{/login}" class="back-link">Back to Login</a>
+            <a th:href="@{/login}" class="">Back to Login</a>
         </div>
     </div>
 </body>

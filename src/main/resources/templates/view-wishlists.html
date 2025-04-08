@@ -11,7 +11,7 @@
     <div class="container">
         <header class="wishlist-header">
             <div class="header-content">
-                <h1>Your Wishlists</h1>
+                <h1><span th:text="${username}"></span>'s Wishlists</h1>
                 <div class="header-actions">
                     <a th:href="@{/wishlist/add/{username}(username=${username})}" class="add-wish-button">
                         <span class="plus-icon">+</span> Create New Wishlist
@@ -22,9 +22,6 @@
 
         <main>
             <div class="wishlist-details">
-                <div class="welcome-section">
-                    <p class="welcome-message">Welcome back, <span th:text="${username}" class="username"></span>!</p>
-                </div>
 
                 <div th:if="${wishLists.empty}" class="no-items">
                     <div class="no-items-content">
