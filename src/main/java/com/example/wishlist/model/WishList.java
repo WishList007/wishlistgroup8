@@ -7,6 +7,7 @@ public class WishList {
     private int wishListId;
     private String wishListName;
     private String wishListDescription;
+    private int userId;
     private List<WishListItem> wishListItems;
 
     public WishList(int wishListId, String wishListName, String wishListDescription, List<WishListItem> wishListItems) {
@@ -37,6 +38,10 @@ public class WishList {
         this.wishListItems = wishListItems != null ? wishListItems : new ArrayList<>();
     }
 
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     //----------Getters-----------
     public int getWishListId() {
         return wishListId;
@@ -52,5 +57,9 @@ public class WishList {
 
     public List<WishListItem> getWishListItems() {
         return wishListItems != null ? wishListItems : new ArrayList<>();
+    }
+
+    public int getUserId() {
+        return userId;
     }
 }

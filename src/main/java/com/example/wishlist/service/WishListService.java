@@ -29,28 +29,40 @@ public class WishListService {
         wishListRepository.addWishList(wishList, username);
     }
 
-    public void addItemToWishList(WishListItem item, int itemId) {
-        wishListRepository.addItemToWishList(item, itemId);
+    public void addItemToWishList(WishListItem item, int wishListId) {
+        wishListRepository.addItemToWishList(item, wishListId);
     }
 
     public List<WishList> getAllWishLists(String username) {
-        return wishListRepository.findAllWishLists(username);
+        return wishListRepository.getWishListsByUsername(username);
     }
 
-    public List<WishListItem> getItemById(int itemId) {
-        return wishListRepository.findAllItemsId(itemId);
-    }
-
-    public List<WishListItem> findItem(int itemId) {
-        return wishListRepository.findItem(itemId);
+    public WishListItem getItemById(int itemId) {
+        return wishListRepository.getItemById(itemId);
     }
 
     public List<UserEntity> getAllUsers() {
-        return wishListRepository.findAllUsers();
+        return wishListRepository.getAllUsers();
     }
 
     public UserEntity getUserByUsername(String username) {
-        return wishListRepository.findUserName(username);
+        return wishListRepository.getUserByUsername(username);
+    }
+
+    public UserEntity getUserById(int userId) {
+        return wishListRepository.getUserById(userId);
+    }
+
+    public String getUsernameForWishlist(int wishListId) {
+        WishList wishlist = wishListRepository.getWishListById(wishListId);
+        if (wishlist == null) {
+            return null;
+        }
+        UserEntity user = getUserById(wishlist.getUserId());
+        if (user == null) {
+            return null;
+        }
+        return user.getUsername();
     }
 
     public boolean deleteWishList(int wishListId) {
@@ -61,19 +73,11 @@ public class WishListService {
         return wishListRepository.deleteItem(itemId);
     }
 
-    public void updateItem(WishListItem item, int itemId) {
-        wishListRepository.updateItem(item, itemId);
+    public void updateItem(WishListItem item) {
+        wishListRepository.updateItem(item);
     }
 
-    public WishListItem getWishListItemById(int itemId) {
-        return wishListRepository.getWishListItemById(itemId);
-    }
-
-    public void updateWishListItem(WishListItem item) {
-        wishListRepository.updateWishListItem(item);
-    }
-
-    public void deleteWishListItem(int itemId) {
-        wishListRepository.deleteWishListItem(itemId);
+    public List<WishListItem> getItemsByWishListId(int wishListId) {
+        return wishListRepository.getItemsByWishListId(wishListId);
     }
 }

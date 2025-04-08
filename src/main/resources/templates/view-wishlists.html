@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Your Wishlists</title>
+    <title th:text="|${username}'s Wishlists|">User Wishlists</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
@@ -19,6 +19,11 @@
                 </div>
             </div>
         </header>
+
+        <!-- Logout Button -->
+        <div style="text-align: right; margin-bottom: 10px;">
+            <a th:href="@{/logout}" class="button">Logout</a>
+        </div>
 
         <main>
             <div class="wishlist-details">

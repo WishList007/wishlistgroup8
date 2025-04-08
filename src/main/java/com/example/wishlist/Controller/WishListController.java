@@ -16,6 +16,8 @@ import com.example.wishlist.model.WishList;
 import com.example.wishlist.model.WishListItem;
 import com.example.wishlist.service.WishListService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class WishListController {
 
@@ -23,6 +25,12 @@ public class WishListController {
 
     public WishListController(WishListService wishListService) {
         this.wishListService = wishListService;
+    }
+
+    // Helper method to check session status and user match
+    private boolean isLoggedIn(HttpSession session, String username) {
+        String sessionUsername = (String) session.getAttribute("username");
+        return sessionUsername != null && sessionUsername.equals(username);
     }
 
     @GetMapping("/")
@@ -37,11 +45,13 @@ public class WishListController {
     }
 
     @PostMapping("/login")
-    public String loginUser(@ModelAttribute("user") UserEntity user, Model model) {
+    public String loginUser(@ModelAttribute("user") UserEntity user, Model model, HttpSession session) {
         try {
             UserEntity existingUser = wishListService.getUserByUsername(user.getUsername());
             if (existingUser.getPassword().equals(user.getPassword())) {
-                return "redirect:/wishlist/add/" + existingUser.getUsername();
+                session.setAttribute("username", existingUser.getUsername());
+                session.setMaxInactiveInterval(30);
+                return "redirect:/wishlist/" + existingUser.getUsername();
             }
             model.addAttribute("error", "Incorrect password");
             return "login";
@@ -76,7 +86,10 @@ public class WishListController {
     }
 
     @GetMapping("/wishlist/add/{username}")
-    public String showAddWishlistForm(@PathVariable String username, Model model) {
+    public String showAddWishlistForm(@PathVariable String username, Model model, HttpSession session) {
+        if (!isLoggedIn(session, username)) {
+            return "redirect:/login";
+        }
         model.addAttribute("username", username);
         try {
             List<WishList> wishLists = wishListService.getAllWishLists(username);
@@ -91,7 +104,10 @@ public class WishListController {
     public String addWishlist(@RequestParam String username,
                             @RequestParam String listName,
                             @RequestParam(required = false) String description,
-                            Model model) {
+                            Model model, HttpSession session) {
+        if (!isLoggedIn(session, username)) {
+            return "redirect:/login";
+        }
         try {
             WishList wishList = new WishList();
             wishList.setWishListName(listName);
@@ -106,13 +122,21 @@ public class WishListController {
     }
 
     @PostMapping("/wishlist/delete")
-    public String deleteWishlist(@RequestParam int wishListId, @RequestParam String username) {
+    public String deleteWishlist(@RequestParam int wishListId, @RequestParam String username, HttpSession session) {
+        String ownerUsername = wishListService.getUsernameForWishlist(wishListId);
+        if (!isLoggedIn(session, ownerUsername) || !username.equals(ownerUsername)) {
+            return "redirect:/login";
+        }
         wishListService.deleteWishList(wishListId);
         return "redirect:/wishlist/" + username;
     }
 
     @GetMapping("/wishlist/wish/add/{wishListId}")
-    public String showAddWishForm(@PathVariable int wishListId, @RequestParam String username, Model model) {
+    public String showAddWishForm(@PathVariable int wishListId, @RequestParam String username, Model model, HttpSession session) {
+        String ownerUsername = wishListService.getUsernameForWishlist(wishListId);
+        if (!isLoggedIn(session, ownerUsername) || !username.equals(ownerUsername)) {
+            return "redirect:/login";
+        }
         try {
             List<WishList> wishlists = wishListService.getAllWishLists(username);
             String wishListName = wishlists.stream()
@@ -137,7 +161,11 @@ public class WishListController {
                                @RequestParam(required = false) String itemLink,
                                @RequestParam int wishListId,
                                @RequestParam String username,
-                               Model model) {
+                               Model model, HttpSession session) {
+        String ownerUsername = wishListService.getUsernameForWishlist(wishListId);
+        if (!isLoggedIn(session, ownerUsername) || !username.equals(ownerUsername)) {
+            return "redirect:/login";
+        }
         try {
             WishListItem item = new WishListItem();
             item.setItemName(itemName);
@@ -159,7 +187,10 @@ public class WishListController {
     }
 
     @GetMapping("/wishlist/{username}")
-    public String viewUserWishlists(@PathVariable String username, Model model) {
+    public String viewUserWishlists(@PathVariable String username, Model model, HttpSession session) {
+        if (!isLoggedIn(session, username)) {
+            return "redirect:/login";
+        }
         try {
             wishListService.getUserByUsername(username);
             List<WishList> wishLists = wishListService.getAllWishLists(username);
@@ -172,7 +203,11 @@ public class WishListController {
     }
 
     @GetMapping("/wishlist/view/{wishListId}")
-    public String viewWishlist(@PathVariable int wishListId, @RequestParam String username, Model model) {
+    public String viewWishlist(@PathVariable int wishListId, @RequestParam String username, Model model, HttpSession session) {
+        String ownerUsername = wishListService.getUsernameForWishlist(wishListId);
+        if (!isLoggedIn(session, ownerUsername) || !username.equals(ownerUsername)) {
+            return "redirect:/login";
+        }
         try {
             List<WishList> wishlists = wishListService.getAllWishLists(username);
             WishList wishlist = wishlists.stream()
@@ -190,30 +225,66 @@ public class WishListController {
 
     @GetMapping("/wishlist/wish/edit/{itemId}")
     public String showEditWishForm(@PathVariable int itemId, 
-                                 @RequestParam(required = false) String username, 
-                                 Model model) {
-        WishListItem item = wishListService.getWishListItemById(itemId);
+                                 @RequestParam(required = false) String username,
+                                 Model model, HttpSession session) {
+        WishListItem item = wishListService.getItemById(itemId);
         if (item == null) {
             return "redirect:/error";
         }
+        String ownerUsername = wishListService.getUsernameForWishlist(item.getWishListId());
+        String sessionUser = (String) session.getAttribute("username");
+        if (sessionUser == null || !sessionUser.equals(ownerUsername)) {
+            return "redirect:/login";
+        }
+        if (username != null && !username.equals(ownerUsername)) {
+            return "redirect:/login";
+        }
         model.addAttribute("item", item);
-        model.addAttribute("username", username);
+        model.addAttribute("username", ownerUsername);
         return "edit-wish";
     }
 
     @PostMapping("/wishlist/wish/edit")
     public String editWish(@ModelAttribute WishListItem item, 
                           @RequestParam("wishListId") int wishListId,
-                          @RequestParam("username") String username) {
-        wishListService.updateWishListItem(item);
+                          @RequestParam("username") String username,
+                          HttpSession session) {
+        String ownerUsername = wishListService.getUsernameForWishlist(wishListId);
+        if (!isLoggedIn(session, ownerUsername) || !username.equals(ownerUsername)) {
+            return "redirect:/login";
+        }
+        WishListItem existingItem = wishListService.getItemById(item.getItemId());
+        if(existingItem == null || existingItem.getWishListId() != wishListId){
+            return "redirect:/error";
+        }
+        
+        wishListService.updateItem(item);
         return "redirect:/wishlist/view/" + wishListId + "?username=" + username;
     }
 
     @PostMapping("/wishlist/wish/delete/{itemId}")
     public String deleteWish(@PathVariable int itemId, 
                            @RequestParam("wishListId") int wishListId,
-                           @RequestParam("username") String username) {
-        wishListService.deleteWishListItem(itemId);
+                           @RequestParam("username") String username,
+                           HttpSession session) {
+        String ownerUsername = wishListService.getUsernameForWishlist(wishListId);
+        if (!isLoggedIn(session, ownerUsername) || !username.equals(ownerUsername)) {
+            return "redirect:/login";
+        }
+        WishListItem existingItem = wishListService.getItemById(itemId);
+        if(existingItem == null || existingItem.getWishListId() != wishListId){
+            return "redirect:/error";
+        }
+
+        wishListService.deleteItem(itemId);
         return "redirect:/wishlist/view/" + wishListId + "?username=" + username;
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        // Invalidate session
+        session.invalidate();
+        // Redirect to login page
+        return "redirect:/login";
     }
 }

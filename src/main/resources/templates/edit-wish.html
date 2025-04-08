@@ -23,6 +23,10 @@
         <main>
             <div class="wishlist-details">
                 <div class="form-container">
+                    <div style="text-align: right; margin-bottom: 10px;">
+                        <a th:href="@{/logout}" class="button">Logout</a>
+                    </div>
+
                     <form th:action="@{/wishlist/wish/edit}" method="post" class="modern-form">
                         <input type="hidden" name="itemId" th:value="${item.itemId}" />
                         <input type="hidden" name="wishListId" th:value="${item.wishListId}" />
