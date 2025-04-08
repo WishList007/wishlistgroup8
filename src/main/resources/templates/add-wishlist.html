@@ -8,37 +8,89 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="wishlist-container">
-        <h2>Create a New Wishlist</h2>
-        <p class="welcome-message">Welcome, <span th:text="${username}"></span>!</p>
-
-        <div class="form-container">
-            <form th:action="@{/wishlist/add}" method="post" class="wishlist-form">
-                <input type="hidden" name="username" th:value="${username}"/>
-                
-                <div class="form-group">
-                    <label for="listName">Wishlist Name</label>
-                    <input type="text" id="listName" name="listName" required/>
+    <div class="container">
+        
+        <header class="wishlist-header">
+            <div class="header-content">
+                <h1>Create New Wishlist</h1>
+                <div class="header-actions">
+                    <a th:href="@{/wishlist/{username}(username=${username})}" class="back-button">
+                        <span class="back-icon">←</span> See All Wishlists
+                    </a>
                 </div>
-                
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea id="description" name="description" rows="4"></textarea>
+            </div>
+        </header>
+
+        <main>
+            <div class="wishlist-details">
+                <div class="welcome-section">
+                    <p class="welcome-message">Hello, <span th:text="${username}" class="username"></span>! Let's create your new wishlist.</p>
                 </div>
-                
-                <button type="submit" class="submit-btn">Create Wishlist</button>
-            </form>
 
-            <div th:if="${error}" class="message error">
-                <p th:text="${error}"></p>
+                <div class="form-container">
+                    <form th:action="@{/wishlist/add}" method="post" class="modern-form">
+                        <input type="hidden" name="username" th:value="${username}"/>
+                        
+                        <div class="form-group">
+                            <label for="listName">Wishlist Name</label>
+                            <input type="text" id="listName" name="listName" required 
+                                   placeholder="Enter a name for your wishlist"/>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="description">Description (Optional)</label>
+                            <textarea id="description" name="description" rows="4" 
+                                    placeholder="Add a description to help others understand what this wishlist is for"></textarea>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="submit-button">
+                                <span class="plus-icon">+</span> Create Wishlist
+                            </button>
+                        </div>
+                    </form>
+
+                    <div th:if="${error}" class="alert error-alert">
+                        <span class="alert-icon">⚠️</span>
+                        <p th:text="${error}"></p>
+                    </div>
+
+                    <div th:if="${success}" class="alert success-alert">
+                        <span class="alert-icon">✅</span>
+                        <p th:text="${success}"></p>
+                    </div>
+                </div>
+
+                <div th:if="${!wishLists.empty}" class="current-wishlists-section" style="margin-top: 60px;">
+                    <h2 style="text-align: left; margin-bottom: 30px; color: #2c3e50; font-size: 1.8em;">Current Wishlists</h2>
+                    <div class="wishlists-grid">
+                        <div th:each="wishlist : ${wishLists}" class="wishlist-card">
+                            <a th:href="@{/wishlist/view/{wishListId}(wishListId=${wishlist.wishListId}, username=${username})}" class="wishlist-link">
+                                <div class="wishlist-content">
+                                    <h3 th:text="${wishlist.wishListName}">Wishlist Name</h3>
+                                    <p th:if="${wishlist.wishListDescription != null}" th:text="${wishlist.wishListDescription}" class="wishlist-description">Description</p>
+                                    
+                                    <div class="wishlist-summary">
+                                        <span class="item-count" th:text="${wishlist.wishListItems != null ? wishlist.wishListItems.size() + ' items' : '0 items'}">0 items</span>
+                                        <span class="view-details">View Details →</span>
+                                    </div>
+
+                                    <div th:if="${wishlist.wishListItems != null && !wishlist.wishListItems.empty}" class="preview-items">
+                                        <div th:each="item, itemStat : ${wishlist.wishListItems}" th:if="${itemStat.index < 3}" class="preview-item">
+                                            <span class="item-name" th:text="${item.itemName}">Item Name</span>
+                                            <span th:if="${item.itemPrice != null}" class="preview-price" th:text="${#numbers.formatDecimal(item.itemPrice, 1, 2) + ' DKK'}">0.00 DKK</span>
+                                        </div>
+                                        <div th:if="${wishlist.wishListItems.size() > 3}" class="more-items">
+                                            <span th:text="'+ ' + (${wishlist.wishListItems.size() - 3}) + ' more'">+ X more</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div th:if="${success}" class="message success">
-                <p th:text="${success}"></p>
-            </div>
-
-            <a th:href="@{/wishlist/{username}(username=${username})}" class="back-link">View My Wishlists</a>
-        </div>
+        </main>
     </div>
 </body>
 </html> 

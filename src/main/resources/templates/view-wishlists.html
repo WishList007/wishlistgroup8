@@ -1,42 +1,66 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Your Wishlists</title>
+    <title th:text="|${username}'s Wishlists|">User Wishlists</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="wishlist-container">
-        <h2>Your Wishlists</h2>
-        <p class="welcome-message">Welcome, <span th:text="${username}"></span>!</p>
-
-        <div th:if="${wishLists.empty}" class="empty-state">
-            <p>You don't have any wishlists yet.</p>
-            <a th:href="@{/wishlist/add/{username}(username=${username})}" class="create-wishlist-btn">Create Your First Wishlist</a>
-        </div>
-
-        <div th:unless="${wishLists.empty}">
-            <div th:each="wishlist : ${wishLists}" class="wishlist-item">
-                <h3 th:text="${wishlist.wishListName}">Wishlist Name</h3>
-                <p th:if="${wishlist.wishListDescription != null}" th:text="${wishlist.wishListDescription}">Description</p>
-                
-                <!-- Check if wishListItems exists and is not empty -->
-                <div th:with="items=${wishlist.wishListItems}">
-                    <p th:if="${items == null || items.empty}">No items in this wishlist yet.</p>
-                    <ul th:if="${items != null && !items.empty}" class="items-list">
-                        <li th:each="item : ${items}">
-                            <span class="item-name" th:text="${item.itemName}">Item Name</span>
-                            <span th:if="${item.itemPrice > 0}" class="item-price" th:text="'$' + ${item.itemPrice}">Price</span>
-                            <a th:if="${item.itemLink != null}" th:href="${item.itemLink}" class="view-item-link" target="_blank">View Item</a>
-                        </li>
-                    </ul>
+    <div class="container">
+        
+        <header class="wishlist-header">
+            <div class="header-content">
+                <h1><span th:text="${username}"></span>'s Wishlists</h1>
+                <div class="header-actions">
+                    <a th:href="@{/wishlist/add/{username}(username=${username})}" class="add-wish-button">
+                        <span class="plus-icon">+</span> Create New Wishlist
+                    </a>
                 </div>
             </div>
-            
-            <a th:href="@{/wishlist/add/{username}(username=${username})}" class="create-wishlist-btn">Create New Wishlist</a>
-        </div>
+        </header>
+
+        <main>
+            <div class="wishlist-details">
+
+                <div th:if="${wishLists.empty}" class="no-items">
+                    <div class="no-items-content">
+                        <span class="no-items-icon">📋</span>
+                        <p>You don't have any wishlists yet.</p>
+                        <a th:href="@{/wishlist/add/{username}(username=${username})}" class="add-first-wish-button">
+                            Create Your First Wishlist
+                        </a>
+                    </div>
+                </div>
+
+                <div th:unless="${wishLists.empty}" class="wishlists-grid">
+                    <div th:each="wishlist : ${wishLists}" class="wishlist-card">
+                        <a th:href="@{/wishlist/view/{wishListId}(wishListId=${wishlist.wishListId}, username=${username})}" class="wishlist-link">
+                            <div class="wishlist-content">
+                                <h3 th:text="${wishlist.wishListName}">Wishlist Name</h3>
+                                <p th:if="${wishlist.wishListDescription != null}" th:text="${wishlist.wishListDescription}" class="wishlist-description">Description</p>
+                                
+                                <div class="wishlist-summary">
+                                    <span class="item-count" th:text="${wishlist.wishListItems != null ? wishlist.wishListItems.size() + ' items' : '0 items'}">0 items</span>
+                                    <span class="view-details">View Details →</span>
+                                </div>
+
+                                <div th:if="${wishlist.wishListItems != null && !wishlist.wishListItems.empty}" class="preview-items">
+                                    <div th:each="item, itemStat : ${wishlist.wishListItems}" th:if="${itemStat.index < 3}" class="preview-item">
+                                        <span class="item-name" th:text="${item.itemName}">Item Name</span>
+                                        <span th:if="${item.itemPrice != null}" class="preview-price" th:text="${#numbers.formatDecimal(item.itemPrice, 1, 2) + ' DKK'}">0.00 DKK</span>
+                                    </div>
+                                    <div th:if="${wishlist.wishListItems.size() > 3}" class="more-items">
+                                        <span th:text="'+ ' + (${wishlist.wishListItems.size() - 3}) + ' more'">+ X more</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
 </body>
 </html> 

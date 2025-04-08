@@ -6,49 +6,55 @@ private String itemName;
 private String itemDescription;
 private double itemPrice;
 private String itemLink;
+private int wishListId;
 
-public WishListItem(int itemId,String itemName,String itemDescription,double itemPrice,String itemLink){
+public WishListItem(int itemId, String itemName, String itemDescription, double itemPrice, String itemLink, int wishListId){
     this.itemId = itemId;
     this.itemName = itemName;
     this.itemDescription = itemDescription;
     this.itemPrice = itemPrice;
-    this.itemLink=itemLink;
+    this.itemLink = itemLink;
+    this.wishListId = wishListId;
 }
 public WishListItem(){
 
 }
 //--------Getters----------
     public int getItemId(){
-    return itemId;
+        return itemId;
     }
     public String getItemName(){
-    return itemName;
+        return itemName;
     }
     public String getItemDescription(){
-    return itemDescription;
+        return itemDescription;
     }
     public double getItemPrice(){
-    return itemPrice;
+        return itemPrice;
     }
     public String getItemLink(){
-    return itemLink;
+        return itemLink;
+    }
+    public int getWishListId() {
+        return wishListId;
     }
     //-----------------Setters----------
     public void setItemId(int itemId){
-    this.itemId = itemId;
+        this.itemId = itemId;
     }
     public void setItemName (String itemName){
-    this.itemName = itemName;
+        this.itemName = itemName;
     }
     public void setItemDescription (String itemDescription){
-    this.itemDescription = itemDescription;
+        this.itemDescription = itemDescription;
     }
     public void setItemPrice (double itemPrice){
-this.itemPrice = itemPrice;
+        this.itemPrice = itemPrice;
     }
-    public void getItemLink(String itemLink){
-    this.itemLink = itemLink;
+    public void setItemLink(String itemLink){
+        this.itemLink = itemLink;
     }
-
-
+    public void setWishListId(int wishListId) {
+        this.wishListId = wishListId;
+    }
 }

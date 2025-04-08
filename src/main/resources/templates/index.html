@@ -3,9 +3,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Wishlist Homepage</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-<h1>Welcome to the Wishlist App</h1>
-<p><a th:href="@{/create-wishlist}">Create a Wishlist</a></p>
+    
+    <div class="container">
+        <h1>Welcome to the Wishlist App</h1>
+        <p><a th:href="@{/login}" class="button">Get Started</a></p>
+    </div>
 </body>
 </html>

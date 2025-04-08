@@ -1,256 +1,479 @@
-/* Global Styles */
+/* ===================================================
+   Theme Variables
+=================================================== */
 :root {
-    --primary-color: #4a90e2;
-    --secondary-color: #2c3e50;
-    --background-color: #f5f6fa;
-    --text-color: #2c3e50;
-    --border-radius: 8px;
-    --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    line-height: 1.6;
-    color: var(--text-color);
-    background-color: var(--background-color);
+    --primary: #5A67D8;           /* pastel-indigo */
+    --primary-light: #7F85EB;
+    --accent: #48BB78;            /* soft green for accents */
+    --bg: #f0f2f5;                /* overall page background */
+    --card-bg: #ffffff;           /* container background */
+    --text-dark: #2D3748;         /* for headings */
+    --text-normal: #4a4a4a;       /* default text */
+    --border: #e2e8f0;
+    --shadow: rgba(0, 0, 0, 0.08);
+    --shadow-hover: rgba(0, 0, 0, 0.12);
+    --error-bg: #fdecea;
+    --error-border: #f5c6cb;
+    --error-text: #a94442;
+    --success-bg: #eafaf1;
+    --success-border: #c3e6cb;
+    --success-text: #3c763d;
+  }
+  
+  /* ===================================================
+     Global Reset & Base Styles
+  =================================================== */
+  *,
+  *::before,
+  *::after {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html {
+    font-size: 16px;
+  }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg);
+    color: var(--text-normal);
+    line-height: 1.6;
     padding: 20px;
-}
-
-/* Header Styles */
-h2 {
-    color: var(--secondary-color);
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: 2.5em;
-}
-
-/* Welcome Message */
-.welcome-message {
-    text-align: center;
-    margin-bottom: 40px;
-    font-size: 1.2em;
-    color: var(--secondary-color);
-}
-
-/* Wishlist Container */
-.wishlist-container {
+  }
+  
+  /* Remove default image and svg behaviors */
+  img,
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Basic typography */
+  h1, h2, h3, h4, h5 {
+    color: var(--text-dark);
+    margin-bottom: 0.5em;
+    font-weight: 600;
+  }
+  
+  p {
+    margin-bottom: 1em;
+  }
+  
+  /* ===================================================
+     Links
+  =================================================== */
+  a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  a:hover {
+    color: var(--primary-light);
+  }
+  
+  /* ===================================================
+     Containers & Layout
+  =================================================== */
+  .container,
+  .wishlist-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
-}
-
-/* Wishlist Item */
-.wishlist-item {
-    background: white;
-    border-radius: var(--border-radius);
-    padding: 25px;
-    margin-bottom: 30px;
-    box-shadow: var(--box-shadow);
-    transition: transform 0.2s ease;
-}
-
-.wishlist-item:hover {
+    background-color: var(--card-bg);
+    padding: 4em;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+  
+  /* ===================================================
+     Header & Navigation
+  =================================================== */
+  .wishlist-header {
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 1.5em;
+    padding-bottom: 1em;
+  }
+  
+  .header-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5em;
+  }
+  
+  .header-content h1 {
+    font-size: 2em;
+  }
+  
+  .header-actions {
+    display: flex;
+    gap: 1em;
+    flex-wrap: wrap;
+  }
+  
+  /* Button Base */
+  a.back-button,
+  a.add-wish-button,
+  a.add-first-wish-button,
+  .back-link {
+    background-color: var(--primary);
+    color: #fff;
+    padding: 0.5em 1em;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.95em;
+    transition: background-color 0.3s ease;
+  }
+  
+  a.back-button .back-icon,
+  a.add-wish-button .plus-icon {
+    margin-right: 0.5em;
+    font-size: 1.1em;
+  }
+  
+  a.back-button:hover,
+  a.add-wish-button:hover,
+  a.add-first-wish-button:hover,
+  .back-link:hover {
+    background-color: var(--primary-light);
+  }
+  
+  /* ===================================================
+     Form Styles
+  =================================================== */
+  .form-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 2em auto;
+    padding: 1.5em;
+    background-color: #fafafa;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 1px 4px var(--shadow);
+  }
+  
+  .modern-form,
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2em;
+  }
+  
+  /* Form Groups */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group label {
+    margin-bottom: 0.5em;
+    font-weight: 500;
+    color: var(--text-dark);
+  }
+  
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    padding: 0.75em;
+    font-size: 1em;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+  
+  /* Form Rows for Side-By-Side Items */
+  .form-row {
+    display: flex;
+    gap: 1em;
+    flex-wrap: wrap;
+  }
+  
+  .form-row .form-group {
+    flex: 1;
+  }
+  
+  /* Full Width for Half Inputs */
+  .half {
+    flex: 1;
+  }
+  
+  /* Actions & Buttons */
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1em;
+  }
+  
+  .submit-button,
+  .delete-wishlist-button {
+    border: none;
+    padding: 0.75em 1.5em;
+    font-size: 1em;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .submit-button .plus-icon {
+    margin-right: 0.5em;
+    font-size: 1.2em;
+  }
+  
+  .submit-button {
+    background-color: var(--primary);
+    color: #fff;
+  }
+  
+  .submit-button:hover {
+    background-color: var(--primary-light);
     transform: translateY(-2px);
-}
-
-.wishlist-item h3 {
-    color: var(--primary-color);
-    margin-top: 0;
-    margin-bottom: 15px;
-    font-size: 1.8em;
-}
-
-.wishlist-item p {
-    color: #666;
-    margin-bottom: 20px;
-}
-
-/* Wishlist Items List */
-.items-list {
-    list-style: none;
-    padding: 0;
-}
-
-.items-list li {
+  }
+  
+  .delete-wishlist-button {
+    background-color: #E53E3E;
+    color: #fff;
+  }
+  
+  .delete-wishlist-button .trash-icon {
+    margin-right: 0.5em;
+    font-size: 1.2em;
+  }
+  
+  .delete-wishlist-button:hover {
+    background-color: #C53030;
+    transform: translateY(-2px);
+  }
+  
+  /* ===================================================
+     Alerts & Messages
+  =================================================== */
+  .alert {
+    padding: 1em;
+    border-radius: 6px;
+    margin-top: 1em;
     display: flex;
     align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid #eee;
-}
-
-.items-list li:last-child {
-    border-bottom: none;
-}
-
-.item-name {
-    flex: 1;
+    gap: 0.5em;
     font-weight: 500;
-}
-
-.item-price {
-    color: #2ecc71;
-    margin: 0 15px;
-    font-weight: 600;
-}
-
-/* Links */
-a {
-    color: var(--primary-color);
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
-
-a:hover {
-    color: #357abd;
-}
-
-.view-item-link {
-    background: var(--primary-color);
-    color: white;
-    padding: 6px 12px;
-    border-radius: var(--border-radius);
+  }
+  
+  .error-alert {
+    background-color: var(--error-bg);
+    border: 1px solid var(--error-border);
+    color: var(--error-text);
+  }
+  
+  .success-alert {
+    background-color: var(--success-bg);
+    border: 1px solid var(--success-border);
+    color: var(--success-text);
+  }
+  
+  .message.error {
+    background-color: var(--error-bg);
+    border: 1px solid var(--error-border);
+    color: var(--error-text);
+    padding: 0.75em;
+    border-radius: 6px;
+    margin-top: 1em;
+  }
+  
+  /* ===================================================
+     Cards & Grids (Wishlists & Items)
+  =================================================== */
+  .wishlists-grid,
+  .items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5em;
+  }
+  
+  .wishlist-card,
+  .item-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px var(--shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .wishlist-card:hover,
+  .item-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px var(--shadow-hover);
+  }
+  
+  .wishlist-link,
+  .edit-link,
+  .external-link,
+  .back-link {
+    color: var(--primary);
+    transition: color 0.3s ease;
+  }
+  
+  .wishlist-link:hover,
+  .edit-link:hover,
+  .external-link:hover,
+  .back-link:hover {
+    color: var(--primary-light);
+  }
+  
+  /* Content inside cards */
+  .wishlist-content,
+  .item-content {
+    padding: 1em;
+  }
+  
+  .wishlist-content h3,
+  .item-content h4 {
+    margin-bottom: 0.5em;
+  }
+  
+  /* Descriptions */
+  .wishlist-description,
+  .item-description,
+  .description {
+    font-size: 0.95em;
+    color: #555;
+    margin-bottom: 0.75em;
+  }
+  
+  /* Wishlist Summary & Preview Items */
+  .wishlist-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     font-size: 0.9em;
-}
-
-.view-item-link:hover {
-    background: #357abd;
-    color: white;
-}
-
-/* Create New Wishlist Button */
-.create-wishlist-btn {
-    display: block;
-    width: fit-content;
-    margin: 40px auto;
-    padding: 12px 24px;
-    background: var(--primary-color);
-    color: white;
-    border-radius: var(--border-radius);
+    color: #777;
+    margin-top: 1em;
+  }
+  
+  .item-count {
     font-weight: 500;
-    text-align: center;
-    transition: background-color 0.2s ease;
-}
-
-.create-wishlist-btn:hover {
-    background: #357abd;
-    color: white;
-}
-
-/* Empty State */
-.empty-state {
-    text-align: center;
-    padding: 40px;
-    background: white;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-}
-
-.empty-state p {
-    color: #666;
+  }
+  
+  .view-details {
+    font-weight: 600;
+    color: var(--primary);
+  }
+  
+  /* Preview in wishlist cards */
+  .preview-items {
+    margin-top: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+  }
+  
+  .preview-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9em;
+    color: #555;
+  }
+  
+  .more-items {
+    font-size: 0.85em;
+    color: #999;
+  }
+  
+  /* ===================================================
+     Items Section in Wishlist Details
+  =================================================== */
+  .items-section {
+    margin-top: 2em;
+  }
+  
+  .items-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1em;
+  }
+  
+  .item-price {
+    font-weight: 500;
+    color: var(--text-dark);
+  }
+  
+  .item-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1em;
+  }
+  
+  .item-link a {
+    display: inline-flex;
+    align-items: center;
     font-size: 1.1em;
-    margin-bottom: 20px;
-}
-
-/* Form Styles */
-.form-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 30px;
-    background: white;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    color: var(--secondary-color);
-    font-weight: 500;
-}
-
-.form-group input,
-.form-group textarea {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: var(--border-radius);
-    font-size: 1em;
-    font-family: inherit;
-    transition: border-color 0.2s ease;
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: var(--primary-color);
-}
-
-.form-group textarea {
-    resize: vertical;
-    min-height: 100px;
-}
-
-.submit-btn {
-    display: block;
-    width: 100%;
-    padding: 14px;
-    background: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: var(--border-radius);
-    font-size: 1.1em;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.submit-btn:hover {
-    background: #357abd;
-}
-
-/* Message Styles */
-.message {
-    margin: 20px 0;
-    padding: 15px;
-    border-radius: var(--border-radius);
-}
-
-.message p {
-    margin: 0;
-}
-
-.message.error {
-    background: #fee2e2;
-    color: #dc2626;
-    border: 1px solid #fecaca;
-}
-
-.message.success {
-    background: #dcfce7;
-    color: #16a34a;
-    border: 1px solid #bbf7d0;
-}
-
-/* Back Link */
-.back-link {
-    display: block;
+  }
+  
+  .link-icon {
+    margin-right: 0.3em;
+  }
+  
+  /* ===================================================
+     No Items / Empty States
+  =================================================== */
+  .no-items {
     text-align: center;
-    margin-top: 20px;
-    color: var(--secondary-color);
-    text-decoration: none;
-}
-
-.back-link:hover {
-    color: var(--primary-color);
-}
-
-/* Login Form Specific */
-.login-form {
-    max-width: 400px;
-    margin: 0 auto;
-} 
+    padding: 2em;
+    color: #777;
+  }
+  
+  .no-items-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5em;
+  }
+  
+  .no-items-icon {
+    font-size: 3em;
+  }
+  
+  /* ===================================================
+     Welcome & Username Display
+  =================================================== */
+  .welcome-section {
+    margin-bottom: 2em;
+    text-align: center;
+  }
+  
+  .welcome-message {
+    font-size: 1.1em;
+  }
+  
+  .username,
+  .wishlist-name {
+    font-weight: 600;
+    color: var(--text-dark);
+  }
+  
+  /* ===================================================
+     Responsive Styles
+  =================================================== */
+  @media (max-width: 768px) {
+    .header-content {
+      align-items: center;
+      text-align: center;
+    }
+    .form-row {
+      flex-direction: column;
+    }
+  }
+  
