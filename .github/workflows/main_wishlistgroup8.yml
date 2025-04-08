@@ -1,6 +1,3 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: Build and deploy JAR app to Azure Web App - wishlistgroup8
 
 on:
@@ -13,12 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read #This is required for actions/checkout
-    
-    env:
-      DEV_DATABASE_URL: ${{ secrets.DEV_DATABASE_URL }}
-      DEV_USERNAME: ${{ secrets.DEV_USERNAME }}
-      DEV_PASSWORD: ${{ secrets.DEV_PASSWORD }}
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -45,26 +37,30 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
-    
-    env:
-      DEV_DATABASE_URL: ${{ secrets.DEV_DATABASE_URL }}
-      DEV_USERNAME: ${{ secrets.DEV_USERNAME }}
-      DEV_PASSWORD: ${{ secrets.DEV_PASSWORD }}
-  
+      id-token: write
+      contents: read
+
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: java-app
-      
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_48918AE9B6A34D2898D2F8CB1CA74F6A }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_974323CBCF824541A7F31BD39349F846 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_CC6AB61B58574C36B1C85FA7FC742DEF }}
+
+      - name: Set environment variables in Azure App Service
+        uses: azure/appservice-settings@v1
+        with:
+          app-name: 'wishlistgroup8'
+          settings: |
+            DEV_DATABASE_URL=${{ secrets.DEV_DATABASE_URL }}
+            DEV_USERNAME=${{ secrets.DEV_USERNAME }}
+            DEV_PASSWORD=${{ secrets.DEV_PASSWORD }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -73,4 +69,3 @@ jobs:
           app-name: 'wishlistgroup8'
           slot-name: 'Production'
           package: '*.jar'
-          
