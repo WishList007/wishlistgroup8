@@ -64,4 +64,16 @@ public class WishListService {
     public void updateItem(WishListItem item, int itemId) {
         wishListRepository.updateItem(item, itemId);
     }
+
+    public WishListItem getWishListItemById(int itemId) {
+        return wishListRepository.getWishListItemById(itemId);
+    }
+
+    public void updateWishListItem(WishListItem item) {
+        wishListRepository.updateWishListItem(item);
+    }
+
+    public void deleteWishListItem(int itemId) {
+        wishListRepository.deleteWishListItem(itemId);
+    }
 }

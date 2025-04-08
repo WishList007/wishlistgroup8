@@ -2,6 +2,7 @@ package com.example.wishlist.repository;
 
 import java.util.List;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -103,6 +104,25 @@ public boolean deleteWishList(int wishListId){
             wishListItem.getItemLink(),
             wishListId
         );
+    }
+
+    public WishListItem getWishListItemById(int itemId) {
+        String sql = "SELECT itemId, itemName, itemDescription, itemPrice, itemLink, wishListId FROM items WHERE itemId = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{itemId}, new BeanPropertyRowMapper<>(WishListItem.class));
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    public void updateWishListItem(WishListItem item) {
+        String sql = "UPDATE items SET itemName = ?, itemDescription = ?, itemPrice = ?, itemLink = ? WHERE itemId = ?";
+        jdbcTemplate.update(sql, item.getItemName(), item.getItemDescription(), item.getItemPrice(), item.getItemLink(), item.getItemId());
+    }
+
+    public void deleteWishListItem(int itemId) {
+        String sql = "DELETE FROM items WHERE itemId = ?";
+        jdbcTemplate.update(sql, itemId);
     }
 
 }

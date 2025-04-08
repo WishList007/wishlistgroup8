@@ -495,6 +495,22 @@ a {
     margin-top: auto;
     display: flex;
     justify-content: flex-end;
+    gap: 10px;
+    align-items: center;
+}
+
+.edit-link {
+    color: #64748b;
+    font-size: 14px;
+    text-decoration: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.edit-link:hover {
+    background-color: #f1f5f9;
+    color: #3498db;
 }
 
 .external-link {

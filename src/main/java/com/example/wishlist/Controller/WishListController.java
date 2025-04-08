@@ -211,4 +211,34 @@ public class WishListController {
             return "redirect:/wishlist/" + username;
         }
     }
+
+    @GetMapping("/wishlist/wish/edit/{itemId}")
+    public String showEditWishForm(@PathVariable int itemId, 
+                                 @RequestParam(required = false) String username, 
+                                 Model model) {
+        System.out.println("Editing item with ID: " + itemId);
+        WishListItem item = wishListService.getWishListItemById(itemId);
+        if (item == null) {
+            System.err.println("Item not found with ID: " + itemId);
+            return "redirect:/error";
+        }
+        System.out.println("Found item: " + item.getItemName());
+        model.addAttribute("item", item);
+        model.addAttribute("username", username);
+        return "edit-wish";
+    }
+
+    @PostMapping("/wishlist/wish/edit")
+    public String editWish(@ModelAttribute WishListItem item, @RequestParam("wishListId") int wishListId,
+                          @RequestParam("username") String username) {
+        wishListService.updateWishListItem(item);
+        return "redirect:/wishlist/view/" + wishListId + "?username=" + username;
+    }
+
+    @PostMapping("/wishlist/wish/delete/{itemId}")
+    public String deleteWish(@PathVariable int itemId, @RequestParam("wishListId") int wishListId,
+                           @RequestParam("username") String username) {
+        wishListService.deleteWishListItem(itemId);
+        return "redirect:/wishlist/view/" + wishListId + "?username=" + username;
+    }
 }
