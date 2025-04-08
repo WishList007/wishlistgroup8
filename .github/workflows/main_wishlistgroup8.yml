@@ -14,6 +14,11 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read #This is required for actions/checkout
+    
+    env:
+      DEV_DATABASE_URL: ${{ secrets.DEV_DATABASE_URL }}
+      DEV_USERNAME: ${{ secrets.DEV_USERNAME }}
+      DEV_PASSWORD: ${{ secrets.DEV_PASSWORD }}
 
     steps:
       - uses: actions/checkout@v4
@@ -42,6 +47,11 @@ jobs:
     permissions:
       id-token: write #This is required for requesting the JWT
       contents: read #This is required for actions/checkout
+    
+    env:
+      DEV_DATABASE_URL: ${{ secrets.DEV_DATABASE_URL }}
+      DEV_USERNAME: ${{ secrets.DEV_USERNAME }}
+      DEV_PASSWORD: ${{ secrets.DEV_PASSWORD }}
   
     steps:
       - name: Download artifact from build job
