@@ -21,6 +21,10 @@ public class WishListService {
         wishListRepository.addUser(user);
     }
 
+    public int getMaxUserId() {
+        return wishListRepository.getMaxUserId();
+    }
+
     public void addWishList(WishList wishList, String username) {
         wishListRepository.addWishList(wishList, username);
     }
