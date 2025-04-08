@@ -69,19 +69,19 @@ public class WishListController {
 
     @PostMapping("/signup")
     public String handleSignup(@ModelAttribute("user") UserEntity user, Model model) {
-        try {
-            wishListService.getUserByUsername(user.getUsername());
+        UserEntity existingUser = wishListService.getUserByUsername(user.getUsername());
+        if (existingUser != null) {
             model.addAttribute("error", "Username already exists");
             return "signup";
-        } catch (Exception e) {
-            try {
-                user.setUserId(wishListService.getMaxUserId() + 1);
-                wishListService.addUser(user);
-                return "redirect:/login";
-            } catch (Exception ex) {
-                model.addAttribute("error", "Error creating account: " + ex.getMessage());
-                return "signup";
-            }
+        }
+        
+        try {
+            user.setUserId(wishListService.getMaxUserId() + 1);
+            wishListService.addUser(user);
+            return "redirect:/login";
+        } catch (Exception ex) {
+            model.addAttribute("error", "Error creating account: " + ex.getMessage());
+            return "signup";
         }
     }
 

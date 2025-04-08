@@ -5,6 +5,13 @@
     <title th:text="${wishlist.wishListName}">Wishlist Details</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .header-actions {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -16,7 +23,10 @@
                     <a th:href="@{/wishlist/wish/add/{wishListId}(wishListId=${wishlist.wishListId},username=${username})}" class="add-wish-button">
                         <span class="plus-icon">+</span> Add Wish
                     </a>
-                    <form th:action="@{/wishlist/delete}" method="post" style="display: inline;" 
+                    <a th:href="@{/wishlist/{username}(username=${username})}" class="back-button">
+                        <span class="back-icon">←</span> Back to All Wishlists
+                    </a>
+                    <form th:action="@{/wishlist/delete}" method="post" style="display: inline; margin-left: auto;" 
                           onsubmit="return confirm('Are you sure you want to delete this wishlist? This action cannot be undone.');">
                         <input type="hidden" name="wishListId" th:value="${wishlist.wishListId}" />
                         <input type="hidden" name="username" th:value="${username}" />
@@ -24,9 +34,6 @@
                             <span class="trash-icon">🗑️</span> Delete Wishlist
                         </button>
                     </form>
-                    <a th:href="@{/wishlist/{username}(username=${username})}" class="back-button">
-                        <span class="back-icon">←</span> Back to All Wishlists
-                    </a>
                 </div>
             </div>
         </header>

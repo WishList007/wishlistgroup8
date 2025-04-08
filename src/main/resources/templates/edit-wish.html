@@ -6,6 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .buttons-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .save-button-container {
+            flex-grow: 1;
+        }
+        .delete-button-container {
+            margin-left: 20px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -59,20 +73,22 @@
                             </div>
                         </div>
 
-                        <div class="form-actions">
-                            <button type="submit" class="submit-button">
-                                Save Changes
-                            </button>
-                        </div>
+                        <div class="buttons-row">
+                            <div class="save-button-container">
+                                <button type="submit" class="submit-button">
+                                    Save Changes
+                                </button>
+                            </div>
                     </form>
 
-                    <form th:action="@{/wishlist/wish/delete/{itemId}(itemId=${item.itemId})}" method="post" style="margin-top: 20px;">
+                    <form th:action="@{/wishlist/wish/delete/{itemId}(itemId=${item.itemId})}" method="post" class="delete-button-container">
                         <input type="hidden" name="wishListId" th:value="${item.wishListId}" />
                         <input type="hidden" name="username" th:value="${username}" />
                         <button type="submit" class="delete-wishlist-button">
                             <span class="trash-icon">🗑️</span> Delete Wish
                         </button>
                     </form>
+                        </div>
 
                     <div th:if="${error}" class="alert error-alert">
                         <span class="alert-icon">⚠️</span>
