@@ -17,7 +17,7 @@ import com.example.wishlist.model.WishList;
 import com.example.wishlist.repository.WishListRepository;
 
 @Controller
-public class UserController {
+public class WishListController {
 
     @Autowired
     private WishListRepository wishListRepository;
