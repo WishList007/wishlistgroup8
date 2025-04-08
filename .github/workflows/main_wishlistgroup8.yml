@@ -57,12 +57,8 @@ jobs:
         uses: azure/appservice-settings@v1
         with:
           app-name: 'wishlistgroup8'
-          app-settings-json: >
-            {
-              "DEV_DATABASE_URL": "${{ secrets.DEV_DATABASE_URL }}",
-              "DEV_USERNAME": "${{ secrets.DEV_USERNAME }}",
-              "DEV_PASSWORD": "${{ secrets.DEV_PASSWORD }}"
-            }
+          app-settings-json: '{"DEV_DATABASE_URL": "${{ secrets.DEV_DATABASE_URL }}", "DEV_USERNAME": "${{ secrets.DEV_USERNAME }}", "DEV_PASSWORD": "${{ secrets.DEV_PASSWORD }}"}'
+          mask-inputs: true
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
