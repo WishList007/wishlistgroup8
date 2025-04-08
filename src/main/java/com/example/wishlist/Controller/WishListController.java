@@ -39,7 +39,12 @@ public class WishListController {
     }
 
     @GetMapping("/login")
-    public String showLoginForm(Model model) {
+    public String showLoginForm(Model model, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        if (username != null) {
+            return "redirect:/wishlist/" + username;
+        }
+        
         model.addAttribute("user", new UserEntity());
         return "login";
     }
@@ -62,7 +67,12 @@ public class WishListController {
     }
 
     @GetMapping("/signup")
-    public String showSignupForm(Model model) {
+    public String showSignupForm(Model model, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        if (username != null) {
+            return "redirect:/wishlist/" + username;
+        }
+        
         model.addAttribute("user", new UserEntity());
         return "signup";
     }
