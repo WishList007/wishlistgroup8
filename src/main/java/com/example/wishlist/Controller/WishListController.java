@@ -3,7 +3,6 @@ package com.example.wishlist.Controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,30 +13,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.wishlist.model.UserEntity;
 import com.example.wishlist.model.WishList;
-import com.example.wishlist.repository.WishListRepository;
+import com.example.wishlist.service.WishListService;
 
 @Controller
 public class WishListController {
 
-    @Autowired
-    private WishListRepository wishListRepository;
+    private final WishListService wishListService;
+
+    public WishListController(WishListService wishListService) {
+        this.wishListService = wishListService;
+    }
 
     @GetMapping("/")
     public String homePage() {
         return "redirect:/login";
     }
 
-    @GetMapping("/login")
-    public String loginPage(Model model) {
-        System.out.println("✅ Reached login page controller.");
-        model.addAttribute("user", new UserEntity());
-        return "login";
-    }
-
     @PostMapping("/login")
     public String loginUser(@ModelAttribute("user") UserEntity user, Model model) {
         try {
-            UserEntity existingUser = wishListRepository.findUserName(user.getUsername());
+            UserEntity existingUser = wishListService.getUserByUsername(user.getUsername());
             if (existingUser.getPassword().equals(user.getPassword())) {
                 return "redirect:/wishlist/add/" + existingUser.getUsername();
             } else {
@@ -48,6 +43,12 @@ public class WishListController {
             model.addAttribute("error", "User not found");
             return "login";
         }
+    }
+
+    @GetMapping("/login")
+    public String showLoginForm(Model model) {
+        model.addAttribute("user", new UserEntity());
+        return "login";
     }
 
     @GetMapping("/wishlist/add/{username}")
@@ -66,7 +67,7 @@ public class WishListController {
             wishList.setWishListName(listName);
             wishList.setWishListDescription(description);
             
-            wishListRepository.addWishList(wishList, username);
+            wishListService.addWishList(wishList, username);
             
             // Redirect to view-wishlists page after successful creation
             return "redirect:/wishlist/" + username;
@@ -81,12 +82,12 @@ public class WishListController {
     public String viewUserWishlists(@PathVariable String username, Model model) {
         try {
             // First verify the user exists
-            wishListRepository.findUserName(username);
+            wishListService.getUserByUsername(username);
             
             // Get wishlists (might be empty)
             List<WishList> wishLists;
             try {
-                wishLists = wishListRepository.findAllWishLists(username);
+                wishLists = wishListService.getAllWishLists(username);
             } catch (Exception e) {
                 // If there's an error getting wishlists, initialize an empty list
                 wishLists = new ArrayList<>();
