@@ -152,8 +152,8 @@ public class WishListController {
             if (itemPrice != null) {
                 item.setItemPrice(itemPrice);
             }
-            if (itemLink != null) {
-                item.getItemLink(itemLink);
+            if (itemLink != null && !itemLink.trim().isEmpty()) {
+                item.setItemLink(itemLink);
             }
             
             wishListService.addItemToWishList(item, wishListId);

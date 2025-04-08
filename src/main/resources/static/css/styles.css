@@ -432,6 +432,43 @@ a:hover {
 
 .item-content {
     padding: 20px;
+    position: relative;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+}
+
+.item-footer {
+    margin-top: auto;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.external-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #f8fafc;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.external-link:hover {
+    background-color: #e2e8f0;
+    transform: translateY(-2px);
+}
+
+.link-icon {
+    font-size: 16px;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.external-link:hover .link-icon {
+    opacity: 1;
 }
 
 .item-card h4 {

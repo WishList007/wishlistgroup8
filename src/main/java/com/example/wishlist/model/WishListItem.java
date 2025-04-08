@@ -44,11 +44,9 @@ public WishListItem(){
     this.itemDescription = itemDescription;
     }
     public void setItemPrice (double itemPrice){
-this.itemPrice = itemPrice;
+    this.itemPrice = itemPrice;
     }
-    public void getItemLink(String itemLink){
+    public void setItemLink(String itemLink){
     this.itemLink = itemLink;
     }
-
-
 }

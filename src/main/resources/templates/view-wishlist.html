@@ -53,8 +53,12 @@
                                 <p th:if="${item.itemPrice != null}" class="item-price">
                                     <span th:text="${#numbers.formatDecimal(item.itemPrice, 1, 2)}">0.00</span> DKK
                                 </p>
-                                <div th:if="${item.itemLink != null}" class="item-link">
-                                    <a th:href="${item.itemLink}" target="_blank" class="view-item-button">View Item</a>
+                                <div class="item-footer">
+                                    <div th:if="${item.itemLink != null}" class="item-link">
+                                        <a th:href="${item.itemLink}" target="_blank" class="external-link" title="Visit item page">
+                                            <span class="link-icon">🔗</span>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
