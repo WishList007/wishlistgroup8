@@ -50,7 +50,7 @@ public class WishListController {
             UserEntity existingUser = wishListService.getUserByUsername(user.getUsername());
             if (existingUser.getPassword().equals(user.getPassword())) {
                 session.setAttribute("username", existingUser.getUsername());
-                session.setMaxInactiveInterval(30);
+                session.setMaxInactiveInterval(120);
                 return "redirect:/wishlist/" + existingUser.getUsername();
             }
             model.addAttribute("error", "Incorrect password");
