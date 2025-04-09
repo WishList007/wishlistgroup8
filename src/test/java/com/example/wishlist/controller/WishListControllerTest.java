@@ -1,5 +1,6 @@
 package com.example.wishlist.controller;
 
+// JUnit and Mockito imports
 import java.util.Arrays;
 import java.util.List;
 

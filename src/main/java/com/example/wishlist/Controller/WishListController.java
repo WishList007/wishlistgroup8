@@ -18,7 +18,7 @@ import com.example.wishlist.model.WishListItem;
 import com.example.wishlist.service.WishListService;
 
 import jakarta.servlet.http.HttpSession;
-@SuppressWarnings("SpringMVCViewInspection") // Virker stadig med MVC view fejl, så supresses for nu
+@SuppressWarnings("SpringMVCViewInspection") // Virker stadig med MVC view fejl, så supresses for nu.
 
 @Controller
 public class WishListController {
