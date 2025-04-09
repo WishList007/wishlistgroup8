@@ -136,7 +136,8 @@ public class WishListRepository {
 
     public int getMaxUserId() {
         String sql = "SELECT MAX(userId) FROM users";
-        return jdbcTemplate.queryForObject(sql, Integer.class);
+        Integer maxId = jdbcTemplate.queryForObject(sql, Integer.class);
+        return maxId != null ? maxId : 0;
     }
 
     // -------------------- CREATE OPERATIONS --------------------

@@ -1,4 +1,4 @@
-package com.example.wishlist.Controller;
+package com.example.wishlist.controller;
 
 import java.util.ArrayList;
 import java.util.List;
